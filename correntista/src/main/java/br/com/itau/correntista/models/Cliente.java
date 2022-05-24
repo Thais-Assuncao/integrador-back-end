@@ -1,4 +1,4 @@
-package br.com.itau.correntista.model;
+package br.com.itau.correntista.models;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -73,6 +73,12 @@ public class Cliente implements IFormatoArquivo<Object> {
 	
 	@Override
 	public Cliente FromArquivoToObject(String delimitador, String texto) {
+		if(texto == null) {
+			return null;
+		}
+		if(texto.isBlank()) {
+			return null;
+		}
 		List<String> palavras = Arrays.asList(texto.split("\\s*"+ delimitador +"\\s*"));
 		if(palavras != null) {
 			Cliente cliente = new Cliente();

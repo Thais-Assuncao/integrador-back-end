@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.itau.correntista.core.infra.arquivo.GerenciadorArquivo;
-import br.com.itau.correntista.model.Cliente;
+import br.com.itau.correntista.exceptions.AgenciaInvalidaException;
+import br.com.itau.correntista.models.Cliente;
+import br.com.itau.correntista.services.IClienteService;
+import br.com.itau.correntista.services.impl.ClienteService;
 
 public class App {
     
@@ -26,6 +29,10 @@ public class App {
     	for (Cliente c : clientes) {
 			System.out.println(c.toFormatoArquivo());
 		}
+    }
+    
+    public static void apresentaMenu() {
+    	
     }
     
 }
