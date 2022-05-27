@@ -7,11 +7,12 @@ import java.util.List;
 
 import br.com.itau.correntista.core.infra.arquivo.GerenciadorArquivo;
 import br.com.itau.correntista.model.Cliente;
+import br.com.itau.correntista.repository.ClienteRepository;
 
 public class App {
     
     public static void main(String[] args) {
-    	GerenciadorArquivo<Cliente> gerenciadorArquivo = new GerenciadorArquivo<Cliente>("Teste.txt");
+    	ClienteRepository rep = new ClienteRepository();
 
     	Cliente cliente = new Cliente("0001", "93456-7", "Pedro da Silva", "62987897984", BigDecimal.valueOf(350.0));
     	Cliente cliente2 = new Cliente("0002", "23456-7", "Jose da Silva", "62988121324", BigDecimal.valueOf(450.0));
@@ -21,8 +22,8 @@ public class App {
     	Cliente cliente6 = new Cliente("0006", "63456-7", "Mateus da Silva", "629828856", BigDecimal.valueOf(850.0));
     	List<Cliente> novosClientes = new ArrayList<>();
     	novosClientes.addAll(Arrays.asList(cliente, cliente2, client3, cliente4, cliente5, cliente6));
-    	gerenciadorArquivo.adicionar(novosClientes);
-    	List<Cliente> clientes = gerenciadorArquivo.buscarTodasLinhasDoArquivo(",", false, Cliente.class);
+    	rep.gravarCliente(novosClientes);
+    	List<Cliente> clientes = rep.listarClientes();
     	for (Cliente c : clientes) {
 			System.out.println(c.toFormatoArquivo());
 		}
