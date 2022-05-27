@@ -12,17 +12,28 @@ public class Cliente implements IFormatoArquivo<Object> {
 	private String conta;
 	private String nomeCliente;
 	private String telefone;
+	private String email;
 	private BigDecimal saldo;
 	
 	public Cliente() {
 	}
 	
-	public Cliente(String agencia, String conta, String nomeCliente, String telefone, BigDecimal saldo) {
+	public Cliente(String agencia, String conta, String nomeCliente, String email, String telefone, BigDecimal saldo) {
 		this.agencia = agencia;
 		this.conta = conta;
 		this.nomeCliente = nomeCliente;
+		this.email = email;
 		this.telefone = telefone;
 		this.saldo = saldo;
+		
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getAgencia() {
@@ -65,6 +76,8 @@ public class Cliente implements IFormatoArquivo<Object> {
 		sb.append(",");
 		sb.append(nomeCliente);
 		sb.append(",");
+		sb.append(email);
+		sb.append(",");
 		sb.append(telefone);
 		sb.append(",");
 		sb.append(saldo);
@@ -85,8 +98,9 @@ public class Cliente implements IFormatoArquivo<Object> {
 			cliente.setAgencia(palavras.get(0));
 			cliente.setConta(palavras.get(1));
 			cliente.setNomeCliente(palavras.get(2));
-			cliente.setTelefone(palavras.get(3));
-			cliente.setSaldo(new BigDecimal(palavras.get(4)));
+			cliente.setEmail(palavras.get(3));
+			cliente.setTelefone(palavras.get(4));
+			cliente.setSaldo(new BigDecimal(palavras.get(5)));
 			return cliente;
 		}
 		return null;
