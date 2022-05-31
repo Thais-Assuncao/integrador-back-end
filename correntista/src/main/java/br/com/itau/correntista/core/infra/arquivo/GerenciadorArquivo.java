@@ -132,7 +132,9 @@ public class GerenciadorArquivo<T extends IFormatoArquivo<?>> {
 		}
 		finally {
 			try {
-				bufferedReader.close();
+				if(file.exists()) {
+					bufferedReader.close();					
+				}
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			}
