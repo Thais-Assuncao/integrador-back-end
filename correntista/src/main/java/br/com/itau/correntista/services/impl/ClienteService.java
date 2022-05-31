@@ -9,48 +9,53 @@ import br.com.itau.correntista.repositories.impl.ClienteRepository;
 import br.com.itau.correntista.services.IClienteService;
 
 public class ClienteService implements IClienteService {
-
+	private List<Cliente> listaClientes = new ArrayList<Cliente>();
+	
 	@Override
-	public void gravar(Cliente cliente) {
+	public void gravar() {
 		ClienteRepository repository = new ClienteRepository();
+				
+		repository.gravarCliente(listaClientes);
 		
+		listaClientes = new ArrayList<>();
+	}
+
+	private void validaCliente(Cliente cliente) throws BusinessException {
 		if(cliente.getAgencia()==null||cliente.getConta()==null||
 		  cliente.getNomeCliente()==null||cliente.getTelefone()==null ||
 		  cliente.getEmail() == null) {
 			throw new BusinessException("Os campos agência, conta, nome, email e telefone são obrigatórios.");
 		}
 		
-		if (!cliente.getEmail().contains("@")) {
+		if (!cliente.getEmail().matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
 			throw new BusinessException("Email inválido!");
 		}
-				
-		repository.gravarCliente(cliente);
 	}
 	
 	@Override
-	public List<Cliente> listarClientes() {
+	public List<Cliente> listarClientes() throws BusinessException {
 		ClienteRepository repository = new ClienteRepository();
 		List<Cliente> listaRetorno = repository.listarClientes();
 	
-		if(!listaRetorno.isEmpty()) {
+		if(listaRetorno !=null && !listaRetorno.isEmpty() ) {
 			return listaRetorno;
 		} else {
 			throw new BusinessException("Nenhum cliente foi encontrado.");
 		}
 	}
 	
-	public void gravarEmMemoria(Cliente cliente) {
-		List<Cliente> listaClientes = new ArrayList<Cliente>();
+	@Override
+	public void gravarEmMemoria(Cliente cliente) throws BusinessException{
+		validaCliente(cliente);
 		listaClientes.add(cliente);
 	}
 	
-	public void listarDaMemoria(List<Cliente> listaClientes) {
-		listaClientes.forEach(contato 
-				-> System.out.println("Nome: " + contato.getNomeCliente() +
-						            "; Agencia: "+ contato.getAgencia() +
-						            "; Conta: " + contato.getConta() +
-						            "; Saldo: " + contato.getSaldo() +
-						            "; Telefone: " +contato.getTelefone() +
-						            "; Email: " + contato.getEmail()));
+	@Override
+	public List<Cliente> listarDaMemoria() throws BusinessException {
+		if(listaClientes != null && !listaClientes.isEmpty()) {
+			return listaClientes;
+		} else {
+			throw new BusinessException("Nenhum cliente foi encontrado.");
+		}
 	}
 }
