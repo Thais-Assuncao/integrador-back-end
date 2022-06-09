@@ -11,4 +11,6 @@ public interface IClienteRepository {
 	
 	public List<Cliente> listarClientes();
 	
+	public void gravarCliente(List<Cliente> clientes);
+	
 }
