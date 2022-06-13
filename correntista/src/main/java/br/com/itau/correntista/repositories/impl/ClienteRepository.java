@@ -3,13 +3,16 @@ package br.com.itau.correntista.repositories.impl;
 import java.util.List;
 
 import br.com.itau.correntista.core.infra.arquivo.GerenciadorArquivo;
+import br.com.itau.correntista.dao.ConexaoDAO;
+import br.com.itau.correntista.dao.CorrentistaDAO;
 import br.com.itau.correntista.models.Cliente;
+import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.repositories.IClienteRepository;
 
 public class ClienteRepository implements IClienteRepository {
 	
 	private GerenciadorArquivo<Cliente> gerenciador = new GerenciadorArquivo<Cliente>("./db.txt");
-	
+
 	private boolean useHeader;
 	
 	public ClienteRepository() {
@@ -35,5 +38,6 @@ public class ClienteRepository implements IClienteRepository {
 	public List<Cliente> listarClientes() {
 		
 		return this.gerenciador.buscarTodasLinhasDoArquivo(",", this.useHeader, Cliente.class); 
-	}	
+	}
+	
 }
