@@ -26,8 +26,8 @@ public class CorrentistaRepository implements ICorrentistaRepository {
 
 	@Override
 	public void atualizarCorrentista(Correntista correntista) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
+		dao.atualiza(correntista);		
 	}	
 
 }
