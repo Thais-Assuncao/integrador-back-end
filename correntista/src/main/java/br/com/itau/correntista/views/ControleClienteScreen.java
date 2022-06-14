@@ -120,22 +120,31 @@ public class ControleClienteScreen extends JFrame {
 		JButton btnSalvar = new JButton("");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(isCadastroValido()) {
-					ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
-					try {
-						Integer agencia = 1001;
-						Integer conta = 	new Random().nextInt(90000) + 10000;
-						correntistaRepository.gravarCorrentista(new Correntista(agencia, 
-							conta, txtNome.getText() , 
-								txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
-								txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
-								txtUf.getSelectedItem().toString()));
-						JOptionPane.showMessageDialog(null, "Conta: " + conta +" criada com sucesso", "Abertura de conta", JOptionPane.INFORMATION_MESSAGE);
-						limparCampos();
-					} catch (SQLException e1) {
-						
-						JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
+				ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
+				Integer agencia = 1001;
+				Integer conta = 	new Random().nextInt(90000) + 10000;
+				
+				try {
+					if(isCadastroValido()) {
+						if(!txtId.getText().isEmpty()) {
+							correntistaRepository.atualizarCorrentista(new Correntista(Long.parseLong(txtId.getText()), agencia, 
+									Integer.parseInt(txtConta.getText()), txtNome.getText() , 
+									txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
+									txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
+									txtUf.getSelectedItem().toString()));
+							limparCampos();
+						}else {
+							correntistaRepository.gravarCorrentista(new Correntista(agencia, 
+									conta, txtNome.getText() , 
+									txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
+									txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
+									txtUf.getSelectedItem().toString()));
+							JOptionPane.showMessageDialog(null, "Conta: " + conta +" criada com sucesso", "Abertura de conta", JOptionPane.INFORMATION_MESSAGE);
+							limparCampos();
+						}
 					}
+				}catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -319,6 +328,8 @@ public class ControleClienteScreen extends JFrame {
 		txtEmail.setText("");
 		txtUf.setSelectedIndex(-1);
 		txtTelefone.setText("");
+		txtAgencia.setText("");
+		txtConta.setText("");
 	}
 	
 	private boolean isCadastroValido() {
