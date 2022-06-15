@@ -44,14 +44,16 @@ public class CorrentistaDAO {
 	}
 	
 	
-	public void remover(Long id) {
+	public int remover(Long id) {
 		 String sql = "delete from correntista where id = ?";
+		 int row = 0;
 		 try (PreparedStatement ps = this.conexao.prepareStatement(sql)) {
 			 ps.setLong(1, id);
-			 ps.executeUpdate();
+			 row = ps.executeUpdate();
 		 } catch (SQLException e) {
 			 System.err.println("Erro ao remover o curso de id "+ id + " --> "+ e.getMessage());
-		 }
+		 } 
+		 return row;
 	}
 	
 	public int atualiza(Correntista correntista) {
