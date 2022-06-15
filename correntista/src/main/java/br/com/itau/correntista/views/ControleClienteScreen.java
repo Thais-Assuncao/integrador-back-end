@@ -162,6 +162,22 @@ public class ControleClienteScreen extends JFrame {
 		toolBar.add(btnEditar);
 		
 		JButton btnExcluir = new JButton("");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
+				
+				try {
+					if(!txtId.getText().isEmpty()) {
+						correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()));
+						limparCampos();
+					}
+
+				}catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+		});
 		btnExcluir.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/bin.png")));
 		toolBar.add(btnExcluir);
 		

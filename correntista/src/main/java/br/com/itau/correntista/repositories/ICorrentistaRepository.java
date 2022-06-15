@@ -10,6 +10,8 @@ public interface ICorrentistaRepository {
 	
 	public void atualizarCorrentista(Correntista correntista) throws SQLException;
 	
+	public boolean excluirCorrentista(Long id) throws SQLException;
+	
 	public Correntista consultaPorId(Long id) throws SQLException;
 
 }
