@@ -79,6 +79,42 @@ public class CorrentistaDAO {
 		return 0;
 	}
 	
+	public Correntista consultaPorAgenciaSenha(Integer conta, Integer senha) throws SQLException {
+		if(conta == null || conta == null) {
+			return null;
+		}
+		
+		try (PreparedStatement ps = this.conexao
+				.prepareStatement("select id, ag, conta, nome, email, telefone, saldo, endereco, cep, bairro, cidade, uf  FROM correntista WHERE conta = ? and senha = ?")) {
+			ps.setInt(1, conta);
+			ps.setInt(2, senha);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				return new Correntista(rs.getLong("id"), 
+						rs.getInt("ag"), 
+						rs.getInt("conta"), 
+						rs.getString("nome"), 
+						rs.getString("email"), 
+						rs.getString("telefone"), 
+						rs.getDouble("saldo"),
+						rs.getString("endereco"),
+						rs.getString("cep"),
+						rs.getString("bairro"),
+						rs.getString("cidade"),
+						rs.getString("uf")
+						);
+			}
+			ConexaoDAO.closeConnection();
+			return null;
+		} catch (SQLException e) {
+			System.err.println("Erro ao buscar o curso de "+ conta + " --> "+ e.getMessage());
+			if(conexao != null) {
+				conexao.close();
+			}
+		}
+		return null;
+	}
+	
 	public Correntista consultaPorId(Long id) throws SQLException {
 		if(id <= 0) {
 			return null;
