@@ -7,9 +7,10 @@ public class ConexaoDAO {
 	private static Connection conn = null;
 	
 	public static Connection getConnection() {
-		String url = "jdbc:mysql://localhost:3306/icarros"; //Nome da base de dados
-		String usuario  = "root"; //nome do usuário do MySQL
-		String senha = "mysql"; //senha do MySQL
+		String url = "jdbc:mysql://localhost:3306/icarros_correntistas"; //Nome da base de dados
+		String usuario  = "root"; //nome do usuário do MySQ
+		String senha = ""; //senha do MySQL
+
 		String driver = "com.mysql.cj.jdbc.Driver";
 		
 		try {
