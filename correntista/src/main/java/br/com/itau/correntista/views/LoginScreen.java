@@ -45,9 +45,10 @@ public class LoginScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginScreen() {
+		GerenteRepository gerenteRepository = new GerenteRepository();
 		setResizable(false);
 		setTitle("Icarros Bank");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 447, 222);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,12 +84,17 @@ public class LoginScreen extends JFrame {
 				else {
 					GerenteRepository gerenteRepository = new GerenteRepository();
 					try {
-						Gerente gerente = gerenteRepository.consultaPorEmail(txtUsuario.getText());
+						String email= txtUsuario.getText().trim();
+						String senha =String.valueOf(txtSenha.getPassword());
+						Gerente gerente = gerenteRepository.consultaPorEmail(email);
 						if(gerente==null) JOptionPane.showMessageDialog(null, "Usuário não encontrado");
-						else if(gerente.getSenha().equals(txtSenha.getPassword().toString())) JOptionPane.showMessageDialog(null, "Senha invalida");
+						else if(!gerente.getSenha().equals(senha)) JOptionPane.showMessageDialog(null, "Senha invalida");
 						else {
 							try {
-								new ControleClienteScreen();
+								ControleClienteScreen conteudo = new ControleClienteScreen();
+								conteudo.setVisible(true);
+								setVisible(false);
+								dispose();
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

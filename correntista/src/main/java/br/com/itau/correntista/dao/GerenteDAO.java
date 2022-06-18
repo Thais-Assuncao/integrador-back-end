@@ -20,7 +20,7 @@ public class GerenteDAO {
 
 		
 		try (PreparedStatement ps = this.conexao
-				.prepareStatement("select email  FROM correntista WHERE email = ?")) {
+				.prepareStatement("select *  FROM gerente WHERE email = ?")) {
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
@@ -36,4 +36,5 @@ public class GerenteDAO {
 		}
 		return null;
 	}
+
 }

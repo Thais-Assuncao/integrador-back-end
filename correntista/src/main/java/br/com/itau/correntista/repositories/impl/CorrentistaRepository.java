@@ -26,8 +26,19 @@ public class CorrentistaRepository implements ICorrentistaRepository {
 
 	@Override
 	public void atualizarCorrentista(Correntista correntista) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
+		dao.atualiza(correntista);		
 	}	
+	
+	@Override
+	public boolean excluirCorrentista(Long id) throws SQLException {
+		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
+		int row = dao.remover(id);
+		if(row >= 1) {
+			return true;
+		}
+		return false;
+	}
+	
 
 }

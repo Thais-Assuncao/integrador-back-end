@@ -3,6 +3,8 @@ package br.com.itau.correntista.views;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Random;
@@ -19,6 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.repositories.ICorrentistaRepository;
@@ -120,22 +124,32 @@ public class ControleClienteScreen extends JFrame {
 		JButton btnSalvar = new JButton("");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(isCadastroValido()) {
-					ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
-					try {
-						Integer agencia = 1001;
-						Integer conta = 	new Random().nextInt(90000) + 10000;
-						correntistaRepository.gravarCorrentista(new Correntista(agencia, 
-							conta, txtNome.getText() , 
-								txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
-								txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
-								txtUf.getSelectedItem().toString()));
-						JOptionPane.showMessageDialog(null, "Conta: " + conta +" criada com sucesso", "Abertura de conta", JOptionPane.INFORMATION_MESSAGE);
-						limparCampos();
-					} catch (SQLException e1) {
-						
-						JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
+				ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
+				Integer agencia = 1001;
+				Integer conta = 	new Random().nextInt(90000) + 10000;
+				
+				try {
+					if(isCadastroValido()) {
+						if(!txtId.getText().isEmpty()) {
+							correntistaRepository.atualizarCorrentista(new Correntista(Long.parseLong(txtId.getText()), agencia, 
+									Integer.parseInt(txtConta.getText()), txtNome.getText() , 
+									txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
+									txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
+									txtUf.getSelectedItem().toString()));
+							JOptionPane.showMessageDialog(null, "Registro atualizado com sucesso","Atualização de registro", JOptionPane.INFORMATION_MESSAGE);
+							limparCampos();
+						}else {
+							correntistaRepository.gravarCorrentista(new Correntista(agencia, 
+									conta, txtNome.getText() , 
+									txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
+									txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
+									txtUf.getSelectedItem().toString()));
+							JOptionPane.showMessageDialog(null, "Conta: " + conta +" criada com sucesso", "Abertura de conta", JOptionPane.INFORMATION_MESSAGE);
+							limparCampos();
+						}
 					}
+				}catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -153,6 +167,35 @@ public class ControleClienteScreen extends JFrame {
 		toolBar.add(btnEditar);
 		
 		JButton btnExcluir = new JButton("");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ICorrentistaRepository correntistaRepository = new CorrentistaRepository();
+				
+				try {
+					if(!txtId.getText().isEmpty()) {
+						Object[] options = {"Sim",
+		                "Não, Deus me livre!"};
+						int resposta=JOptionPane.showOptionDialog(null, 
+															"Deseja realmente excluir este registro?",
+															"Excluir",
+															JOptionPane.YES_NO_OPTION,
+															JOptionPane.QUESTION_MESSAGE,
+															null,
+															options,
+															options[0]);
+						
+						if(resposta==0) {
+							correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()));
+							limparCampos();
+						}
+					}
+
+				}catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+		});
 		btnExcluir.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/bin.png")));
 		toolBar.add(btnExcluir);
 		
@@ -273,6 +316,12 @@ public class ControleClienteScreen extends JFrame {
 		contentPane.add(txtUf);
 		
 		txtTelefone = new JFormattedTextField();
+		txtTelefone.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(txtTelefone.getText().length() > 10) e.consume();
+			}
+		});
 		txtTelefone.setColumns(10);
 		txtTelefone.setBounds(10, 281, 108, 20);
 		contentPane.add(txtTelefone);
@@ -319,6 +368,8 @@ public class ControleClienteScreen extends JFrame {
 		txtEmail.setText("");
 		txtUf.setSelectedIndex(-1);
 		txtTelefone.setText("");
+		txtAgencia.setText("");
+		txtConta.setText("");
 	}
 	
 	private boolean isCadastroValido() {
@@ -326,6 +377,7 @@ public class ControleClienteScreen extends JFrame {
 			JOptionPane.showMessageDialog(null, "Todos os campos são de preenchimento obrigatório!", "Erro: campos obrigatórios", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+		EmailValidator validator = EmailValidator.getInstance();
 		if(!txtEmail.getText().matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
 			JOptionPane.showMessageDialog(null, "E-mail inválido!", "Erro: validação de e-mail", JOptionPane.ERROR_MESSAGE);
 			return false;
