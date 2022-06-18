@@ -14,6 +14,6 @@ public interface ICorrentistaRepository {
 	
 	public Correntista consultaPorId(Long id) throws SQLException;
 	
-	public Correntista consultaPorContaSenha(Integer conta, Integer senha) throws SQLException;
+	public Correntista consultaPorAgenciaConta(Integer agencia, Integer conta) throws SQLException;
 
 }

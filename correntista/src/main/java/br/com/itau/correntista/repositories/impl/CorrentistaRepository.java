@@ -41,9 +41,9 @@ public class CorrentistaRepository implements ICorrentistaRepository {
 	}
 
 	@Override
-	public Correntista consultaPorContaSenha(Integer conta, Integer senha) throws SQLException {
+	public Correntista consultaPorAgenciaConta(Integer agencia, Integer conta) throws SQLException {
 		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
-		return dao.consultaPorAgenciaSenha(conta, senha);
+		return dao.consultaPorAgenciaConta(agencia, conta);
 	}
 	
 
