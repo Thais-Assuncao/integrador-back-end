@@ -39,6 +39,7 @@ public class PrincipalATM extends JFrame {
 	 * Create the frame.
 	 */
 	public PrincipalATM() {
+		setResizable(false);
 		setTitle("ICARROS - CAIXA");
 		setBounds(100, 100, 512, 366);
 		contentPane = new JPanel();
