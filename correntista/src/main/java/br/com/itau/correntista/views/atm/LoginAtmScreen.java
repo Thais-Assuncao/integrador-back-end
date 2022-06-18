@@ -20,6 +20,7 @@ import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.repositories.ICorrentistaRepository;
 import br.com.itau.correntista.repositories.impl.CorrentistaRepository;
 import br.com.itau.correntista.store.CorrentistaLogado;
+import br.com.itau.correntista.utils.Utils;
 
 public class LoginAtmScreen extends JFrame {
 
@@ -50,7 +51,7 @@ public class LoginAtmScreen extends JFrame {
 	public LoginAtmScreen() {
 		setTitle("DEPÓSITO - ICARROS");
 		setResizable(false);
-		setBounds(100, 100, 425, 329);
+		setBounds(450, 250, 425, 329);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -66,8 +67,10 @@ public class LoginAtmScreen extends JFrame {
 				ICorrentistaRepository repository = new CorrentistaRepository();
 				Correntista correntista;
 				try {
-					correntista = repository.consultaPorContaSenha(Integer.parseInt(txtConta.getText()), Integer.parseInt(txtSenha.getText()));
-					if(correntista == null) {
+					
+					correntista = repository
+							.consultaPorAgenciaConta(1001, Integer.parseInt(txtConta.getText()));
+					if(correntista == null || !Utils.verificaSenha(txtSenha.getText(), correntista.getSenha())) {
 						JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!", "Erro de autenticação!", JOptionPane.ERROR_MESSAGE);
 						return;
 					}

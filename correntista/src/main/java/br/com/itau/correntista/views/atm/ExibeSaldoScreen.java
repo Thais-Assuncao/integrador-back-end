@@ -53,7 +53,7 @@ public class ExibeSaldoScreen extends JFrame {
 	public ExibeSaldoScreen() {
 		setTitle("SALDO - ICARROS");
 		setResizable(false);
-		setBounds(100, 100, 425, 329);
+		setBounds(450, 250, 425, 329);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

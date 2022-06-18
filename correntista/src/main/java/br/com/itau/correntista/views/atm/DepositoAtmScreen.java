@@ -52,7 +52,7 @@ public class DepositoAtmScreen extends JFrame {
 	public DepositoAtmScreen() {
 		setTitle("DEPÓSITO - ICARROS");
 		setResizable(false);
-		setBounds(100, 100, 452, 329);
+		setBounds(450, 250, 452, 329);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

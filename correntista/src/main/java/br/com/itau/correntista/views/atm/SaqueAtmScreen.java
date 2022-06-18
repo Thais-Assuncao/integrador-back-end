@@ -55,7 +55,7 @@ public class SaqueAtmScreen extends JFrame {
 	public SaqueAtmScreen() {
 		setTitle("SAQUE - ICARROS");
 		setResizable(false);
-		setBounds(100, 100, 425, 410);
+		setBounds(450, 250, 425, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -186,10 +186,6 @@ public class SaqueAtmScreen extends JFrame {
 		int rows = repository.gravaTransacao(new Transacao(valorSaque, saldoAnterior, saldoAnterior - valorSaque, correntista));
 		if(rows > 0 ) {
 			JOptionPane.showMessageDialog(null, "Saque realizado com sucesso!", "Saque: sucesso!", JOptionPane.INFORMATION_MESSAGE);
-			PrincipalATM principalATM = new PrincipalATM();
-			principalATM.setVisible(true);
-			setVisible(false);
-			dispose();
 		} else {
 			JOptionPane.showMessageDialog(null, "Erro ao registrar o saque", "Saque: erro!", JOptionPane.ERROR_MESSAGE);
 		}

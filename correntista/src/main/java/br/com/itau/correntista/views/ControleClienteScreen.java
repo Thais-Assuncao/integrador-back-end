@@ -27,6 +27,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.repositories.ICorrentistaRepository;
 import br.com.itau.correntista.repositories.impl.CorrentistaRepository;
+import br.com.itau.correntista.utils.Utils;
 
 public class ControleClienteScreen extends JFrame {
 
@@ -69,7 +70,7 @@ public class ControleClienteScreen extends JFrame {
 		setTitle("Gestão de clientes (correntistas)");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 602, 357);
+		setBounds(450, 250, 602, 357);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -143,7 +144,7 @@ public class ControleClienteScreen extends JFrame {
 									conta, txtNome.getText() , 
 									txtEmail.getText(), txtTelefone.getText(), 0.0, txtEndereco.getText(), 
 									txtCep.getText().replace("-", ""), txtBairro.getText(), txtCidade.getText(), 
-									txtUf.getSelectedItem().toString()));
+									txtUf.getSelectedItem().toString(), Utils.criprografaSenha("1234")));
 							JOptionPane.showMessageDialog(null, "Conta: " + conta +" criada com sucesso", "Abertura de conta", JOptionPane.INFORMATION_MESSAGE);
 							limparCampos();
 						}
