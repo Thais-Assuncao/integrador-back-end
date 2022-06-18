@@ -13,5 +13,7 @@ public interface ICorrentistaRepository {
 	public boolean excluirCorrentista(Long id) throws SQLException;
 	
 	public Correntista consultaPorId(Long id) throws SQLException;
+	
+	public Correntista consultaPorAgenciaConta(Integer agencia, Integer conta) throws SQLException;
 
 }

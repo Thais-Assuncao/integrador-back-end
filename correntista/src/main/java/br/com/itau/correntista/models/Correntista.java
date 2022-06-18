@@ -25,6 +25,26 @@ public class Correntista {
 	private String cidade;
 	
 	private String uf;
+	
+	private String senha;
+	
+	public Correntista(Long id, Integer ag, Integer conta, String nome, String email, String telefone, Double saldo,
+			String endereco, String cep, String bairro, String cidade, String uf, String senha) {
+		super();
+		this.id = id;
+		this.ag = ag;
+		this.conta = conta;
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
+		this.saldo = saldo;
+		this.endereco = endereco;
+		this.cep = cep;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.senha = senha;
+	}
 
 	public Correntista(Long id, Integer ag, Integer conta, String nome, String email, String telefone, Double saldo,
 			String endereco, String cep, String bairro, String cidade, String uf) {
@@ -42,6 +62,23 @@ public class Correntista {
 		this.cidade = cidade;
 		this.uf = uf;
 	}
+	
+	public Correntista(Integer ag, Integer conta, String nome, String email, String telefone, Double saldo,
+			String endereco, String cep, String bairro, String cidade, String uf, String senha) {
+		super();
+		this.ag = ag;
+		this.conta = conta;
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
+		this.saldo = saldo;
+		this.endereco = endereco;
+		this.cep = cep;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.senha = senha;
+	}
 
 	public Correntista(Integer ag, Integer conta, String nome, String email, String telefone, Double saldo,
 			String endereco, String cep, String bairro, String cidade, String uf) {
@@ -57,6 +94,10 @@ public class Correntista {
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.uf = uf;
+	}
+
+	public Correntista() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -154,4 +195,14 @@ public class Correntista {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	
 }

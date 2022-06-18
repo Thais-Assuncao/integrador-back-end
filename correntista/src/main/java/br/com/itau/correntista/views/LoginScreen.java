@@ -47,9 +47,9 @@ public class LoginScreen extends JFrame {
 	public LoginScreen() {
 		GerenteRepository gerenteRepository = new GerenteRepository();
 		setResizable(false);
-		setTitle("Icarros Bank");
+		setTitle("Icarros Gestão - Bank");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 447, 222);
+		setBounds(450, 250, 447, 222);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -66,13 +66,13 @@ public class LoginScreen extends JFrame {
 		
 		JLabel lblUsuario = new JLabel("Usuário:");
 		lblUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblUsuario.setBounds(66, 44, 46, 14);
+		lblUsuario.setBounds(28, 44, 84, 14);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSenha.setLabelFor(txtSenha);
-		lblSenha.setBounds(66, 90, 46, 14);
+		lblSenha.setBounds(28, 90, 84, 14);
 		contentPane.add(lblSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
@@ -111,6 +111,12 @@ public class LoginScreen extends JFrame {
 		contentPane.add(btnEntrar);
 		
 		JButton btnSair = new JButton("Sair");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 		btnSair.setBounds(235, 131, 89, 23);
 		contentPane.add(btnSair);
 	}
