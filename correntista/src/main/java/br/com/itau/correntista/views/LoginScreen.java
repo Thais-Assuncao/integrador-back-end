@@ -1,23 +1,30 @@
 package br.com.itau.correntista.views;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.ParseException;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import br.com.itau.correntista.models.Gerente;
+import br.com.itau.correntista.repositories.impl.GerenteRepository;
 
 public class LoginScreen extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField txtSenha;
-
+	private GerenteRepository rep = new GerenteRepository();
 	/**
 	 * Launch the application.
 	 */
@@ -38,9 +45,10 @@ public class LoginScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginScreen() {
+		GerenteRepository gerenteRepository = new GerenteRepository();
 		setResizable(false);
 		setTitle("Icarros Bank");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 447, 222);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -68,6 +76,37 @@ public class LoginScreen extends JFrame {
 		contentPane.add(lblSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(txtUsuario.getText().isBlank()||txtSenha.getPassword().toString().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Preencha os campos de usuário e senha");
+				}
+				else {
+					GerenteRepository gerenteRepository = new GerenteRepository();
+					try {
+						String email= txtUsuario.getText().trim();
+						String senha =String.valueOf(txtSenha.getPassword());
+						Gerente gerente = gerenteRepository.consultaPorEmail(email);
+						if(gerente==null) JOptionPane.showMessageDialog(null, "Usuário não encontrado");
+						else if(!gerente.getSenha().equals(senha)) JOptionPane.showMessageDialog(null, "Senha invalida");
+						else {
+							try {
+								ControleClienteScreen conteudo = new ControleClienteScreen();
+								conteudo.setVisible(true);
+								setVisible(false);
+								dispose();
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e.getMessage(), "Erro inesperado!", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
 		btnEntrar.setBounds(84, 131, 89, 23);
 		contentPane.add(btnEntrar);
 		
