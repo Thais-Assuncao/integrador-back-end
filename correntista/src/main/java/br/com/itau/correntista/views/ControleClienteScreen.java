@@ -186,7 +186,18 @@ public class ControleClienteScreen extends JFrame {
 															options[0]);
 						
 						if(resposta==0) {
-							correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()));
+							if(correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()))) {
+								JOptionPane.showMessageDialog(null, 
+										"Correntista excluído com sucesso!", 
+										"Exclusão: sucesso", 
+										JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(
+										null, 
+										"Não foi possível excluir o correntista, verifique se ele tem movimentação registrada.", 
+										"Exclusão: atenção", 
+										JOptionPane.WARNING_MESSAGE);
+							}
 							limparCampos();
 						}
 					}

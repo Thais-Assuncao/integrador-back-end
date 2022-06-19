@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `icarros_correntistas`.`correntista` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `ag_conta_unique` (`ag` ASC, `conta` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `icarros_correntistas`.`gerente` (
   `modification_time` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -68,13 +68,15 @@ CREATE TABLE IF NOT EXISTS `icarros_correntistas`.`transacao` (
   `saldo_anterior` DECIMAL(8,2) NULL DEFAULT NULL,
   `saldo_atualizado` DECIMAL(8,2) NULL DEFAULT NULL,
   `tipo` VARCHAR(15) NULL DEFAULT NULL,
+  `creation_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `modification_time` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `id_correntista` (`id_correntista` ASC) VISIBLE,
   CONSTRAINT `transacao_ibfk_1`
     FOREIGN KEY (`id_correntista`)
     REFERENCES `icarros_correntistas`.`correntista` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 33
+AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -101,3 +103,5 @@ END$$
 
 
 DELIMITER ;
+
+INSERT INTO gerente (email, senha) VALUES ("gerente@icarros.com.br", "123456");

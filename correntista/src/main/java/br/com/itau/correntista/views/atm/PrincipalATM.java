@@ -4,10 +4,12 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -113,6 +115,23 @@ public class PrincipalATM extends JFrame {
 		lblConta.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblConta.setBounds(178, 58, 130, 14);
 		contentPane.add(lblConta);
+		
+		JButton btnExtrato = new JButton("Extrato");
+		btnExtrato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ExtratoAtmScreen extratoAtmScreen = new ExtratoAtmScreen();
+					extratoAtmScreen.setVisible(true);
+					setVisible(false);
+					dispose();
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao exibir o extrato --> " + e1.getMessage());
+				}
+			}
+		});
+		btnExtrato.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnExtrato.setBounds(195, 260, 106, 39);
+		contentPane.add(btnExtrato);
 		carregaInformacoesUsuarioLogado();
 	}
 	

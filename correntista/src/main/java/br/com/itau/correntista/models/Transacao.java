@@ -1,5 +1,7 @@
 package br.com.itau.correntista.models;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Transacao {
@@ -14,8 +16,23 @@ public class Transacao {
 	
 	private Correntista correntista;
 	
+	private String tipo;
+	
+	private Date dataCriacao;
+	
 	public Transacao() {
 		super();
+	}
+	
+	
+
+	public Transacao(Double fluxo, Double saldoAnterior, Double saldoAtualizado, String tipo, Date dataCriacao) {
+		super();
+		this.fluxo = fluxo;
+		this.saldoAnterior = saldoAnterior;
+		this.saldoAtualizado = saldoAtualizado;
+		this.tipo = tipo;
+		this.dataCriacao = dataCriacao;
 	}
 
 	public Transacao(Double fluxo, Double saldoAnterior, Double saldoAtualizado, Correntista correntista) {
@@ -34,7 +51,8 @@ public class Transacao {
 		this.saldoAtualizado = saldoAtualizado;
 		this.correntista = correntista;
 	}
-
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -74,6 +92,32 @@ public class Transacao {
 	public void setCorrentista(Correntista correntista) {
 		this.correntista = correntista;
 	}
+	
+	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+
 
 	@Override
 	public int hashCode() {
