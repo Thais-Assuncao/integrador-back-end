@@ -240,6 +240,22 @@ public class ControleClienteScreen extends JFrame {
 		btnBuscar.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/search.png")));
 		toolBar.add(btnBuscar);
 		
+		JButton btnRelatorio = new JButton("");
+		btnRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListaCorrentistasScreen listaCorrentistaScreen;
+				try {
+					listaCorrentistaScreen = new ListaCorrentistasScreen();
+					listaCorrentistaScreen.setVisible(true);
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao carregar a lista de correntistas --> " + e1.getMessage(), "Erro: lista de correntistas", JOptionPane.ERROR_MESSAGE);
+					
+				}
+			}
+		});
+		btnRelatorio.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/report.png")));
+		toolBar.add(btnRelatorio);
+		
 		JLabel lblId = new JLabel("Id");
 		lblId.setBounds(10, 41, 17, 14);
 		contentPane.add(lblId);
@@ -379,7 +395,7 @@ public class ControleClienteScreen extends JFrame {
 			return false;
 		}
 		EmailValidator validator = EmailValidator.getInstance();
-		if(!txtEmail.getText().matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
+		if(!validator.isValid(txtEmail.getText())) {
 			JOptionPane.showMessageDialog(null, "E-mail inválido!", "Erro: validação de e-mail", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
