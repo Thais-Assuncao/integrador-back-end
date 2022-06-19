@@ -1,5 +1,7 @@
 package br.com.itau.correntista.repositories.impl;
 
+import java.util.List;
+
 import br.com.itau.correntista.dao.ConexaoDAO;
 import br.com.itau.correntista.dao.TransacaoDAO;
 import br.com.itau.correntista.models.Transacao;
@@ -19,6 +21,12 @@ public class TransacaoRepository implements ITransacaoRepository {
 	public Integer gravaTransacao(Transacao transacao) {
 		dao = new TransacaoDAO(ConexaoDAO.getConnection());
 		 return dao.adiciona(transacao);
+	}
+
+	@Override
+	public List<Transacao> listaTransacoesPorCorrentista(Long idCorrentista) {
+		dao = new TransacaoDAO(ConexaoDAO.getConnection());
+		return dao.buscaPorCorrentista(idCorrentista);
 	}
 
 }

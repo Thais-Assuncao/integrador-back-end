@@ -1,6 +1,7 @@
 package br.com.itau.correntista.repositories.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import br.com.itau.correntista.dao.ConexaoDAO;
 import br.com.itau.correntista.dao.CorrentistaDAO;
@@ -44,6 +45,12 @@ public class CorrentistaRepository implements ICorrentistaRepository {
 	public Correntista consultaPorAgenciaConta(Integer agencia, Integer conta) throws SQLException {
 		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
 		return dao.consultaPorAgenciaConta(agencia, conta);
+	}
+
+	@Override
+	public List<Correntista> listaTodosCorrentistas() throws SQLException {
+		dao = new CorrentistaDAO(ConexaoDAO.getConnection());
+		return dao.listaTodos();
 	}
 	
 

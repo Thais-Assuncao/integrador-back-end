@@ -186,7 +186,18 @@ public class ControleClienteScreen extends JFrame {
 															options[0]);
 						
 						if(resposta==0) {
-							correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()));
+							if(correntistaRepository.excluirCorrentista(Long.parseLong(txtId.getText()))) {
+								JOptionPane.showMessageDialog(null, 
+										"Correntista excluído com sucesso!", 
+										"Exclusão: sucesso", 
+										JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(
+										null, 
+										"Não foi possível excluir o correntista, verifique se ele tem movimentação registrada.", 
+										"Exclusão: atenção", 
+										JOptionPane.WARNING_MESSAGE);
+							}
 							limparCampos();
 						}
 					}
@@ -239,6 +250,22 @@ public class ControleClienteScreen extends JFrame {
 		});
 		btnBuscar.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/search.png")));
 		toolBar.add(btnBuscar);
+		
+		JButton btnRelatorio = new JButton("");
+		btnRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListaCorrentistasScreen listaCorrentistaScreen;
+				try {
+					listaCorrentistaScreen = new ListaCorrentistasScreen();
+					listaCorrentistaScreen.setVisible(true);
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao carregar a lista de correntistas --> " + e1.getMessage(), "Erro: lista de correntistas", JOptionPane.ERROR_MESSAGE);
+					
+				}
+			}
+		});
+		btnRelatorio.setIcon(new ImageIcon(ControleClienteScreen.class.getResource("/icons/report.png")));
+		toolBar.add(btnRelatorio);
 		
 		JLabel lblId = new JLabel("Id");
 		lblId.setBounds(10, 41, 17, 14);
@@ -379,7 +406,7 @@ public class ControleClienteScreen extends JFrame {
 			return false;
 		}
 		EmailValidator validator = EmailValidator.getInstance();
-		if(!txtEmail.getText().matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
+		if(!validator.isValid(txtEmail.getText())) {
 			JOptionPane.showMessageDialog(null, "E-mail inválido!", "Erro: validação de e-mail", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
