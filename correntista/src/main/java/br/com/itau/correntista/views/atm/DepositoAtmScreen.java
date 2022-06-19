@@ -4,24 +4,23 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.models.Transacao;
 import br.com.itau.correntista.repositories.ITransacaoRepository;
 import br.com.itau.correntista.repositories.impl.TransacaoRepository;
 import br.com.itau.correntista.store.CorrentistaLogado;
-import javax.swing.JFormattedTextField;
 
 public class DepositoAtmScreen extends JFrame {
 
@@ -71,8 +70,12 @@ public class DepositoAtmScreen extends JFrame {
 		contentPane.add(btnVoltar);
 
 
-
-		txtValorDeposito = new JFormattedTextField(new java.text.DecimalFormat("#,###.00"));
+		DecimalFormat dFormat = new DecimalFormat("#,##0.00");
+	    NumberFormatter formatter = new NumberFormatter(dFormat);
+	    formatter.setFormat(dFormat);
+	    formatter.setAllowsInvalid(false);
+	    
+		txtValorDeposito = new JFormattedTextField(formatter);
 		txtValorDeposito.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtValorDeposito.setBounds(151, 118, 133, 32);
 		contentPane.add(txtValorDeposito);
@@ -81,22 +84,35 @@ public class DepositoAtmScreen extends JFrame {
 		JButton btnDepositar = new JButton("DEPOSITAR");
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ITransacaoRepository repository = new TransacaoRepository();
-				Correntista correntista = new Correntista();
-				correntista.setId(CorrentistaLogado.getInstance().getId());
-				Double saldoAnterior = repository.buscaSaldoCorrentista(correntista.getId());
+				try {
+					if(txtValorDeposito.getText().isBlank()) {
+						JOptionPane.showMessageDialog(null, "O campo valor é de preenchimento obrigatório", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					Double valorDeposito = Double.parseDouble(txtValorDeposito.getText().replace(".", "").replace(",", "."));
+					if(valorDeposito <= 0) {
+						JOptionPane.showMessageDialog(null, "O campo valor deve ser superior a zero reais.", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					ITransacaoRepository repository = new TransacaoRepository();
+					Correntista correntista = new Correntista();
+					correntista.setId(CorrentistaLogado.getInstance().getId());
+					Double saldoAnterior = repository.buscaSaldoCorrentista(correntista.getId());
 
-				Double valorDeposito = Double.parseDouble(txtValorDeposito.getText().replace(".", "").replace(",", "."));
-				int rows = repository.gravaTransacao(new Transacao(valorDeposito, saldoAnterior, valorDeposito + saldoAnterior, correntista));
-				if(rows > 0 ) {
-					JOptionPane.showMessageDialog(null, "Depósito realizado com sucesso!", "Depósito: sucesso!", JOptionPane.INFORMATION_MESSAGE);
-					PrincipalATM principalATM = new PrincipalATM();
-					principalATM.setVisible(true);
-					setVisible(false);
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Erro ao registrar o depósito", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+					int rows = repository.gravaTransacao(new Transacao(valorDeposito, saldoAnterior, valorDeposito + saldoAnterior, correntista));
+					if(rows > 0 ) {
+						JOptionPane.showMessageDialog(null, "Depósito realizado com sucesso!", "Depósito: sucesso!", JOptionPane.INFORMATION_MESSAGE);
+						PrincipalATM principalATM = new PrincipalATM();
+						principalATM.setVisible(true);
+						setVisible(false);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "Erro ao registrar o depósito", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro inesperado ao registrar o depósito: " + e1.getMessage(), "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
 				}
+				
 			}
 		});
 		btnDepositar.setFont(new Font("Tahoma", Font.BOLD, 14));

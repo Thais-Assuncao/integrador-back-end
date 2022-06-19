@@ -150,7 +150,33 @@ public class CorrentistaDAO {
 		}
 		return null;
 	}
+	
+	public List<Correntista> listaTodos() {
 
-
+		try (PreparedStatement ps = this.conexao
+				.prepareStatement("select id, ag, conta, nome, email, telefone, saldo, endereco, cep, bairro, cidade, uf  FROM correntista")) {
+			List<Correntista> listaCorrentistas = new ArrayList<>();
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				listaCorrentistas.add(new Correntista(rs.getLong("id"), 
+						rs.getInt("ag"), 
+						rs.getInt("conta"), 
+						rs.getString("nome"), 
+						rs.getString("email"), 
+						rs.getString("telefone"), 
+						rs.getDouble("saldo"),
+						rs.getString("endereco"),
+						rs.getString("cep"),
+						rs.getString("bairro"),
+						rs.getString("cidade"),
+						rs.getString("uf")
+						));
+			}
+			return listaCorrentistas;
+		} catch (Exception e1) {
+			System.err.print("Erro ao listar todos os correntistas --> " + e1.getMessage());
+		}
+		return null;
+	}
 
 }

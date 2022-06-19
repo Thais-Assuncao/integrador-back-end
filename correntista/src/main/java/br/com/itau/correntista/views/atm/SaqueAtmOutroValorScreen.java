@@ -1,27 +1,25 @@
 package br.com.itau.correntista.views.atm;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
 
 import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.models.Transacao;
 import br.com.itau.correntista.repositories.ITransacaoRepository;
 import br.com.itau.correntista.repositories.impl.TransacaoRepository;
 import br.com.itau.correntista.store.CorrentistaLogado;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.JFormattedTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class SaqueAtmOutroValorScreen extends JFrame {
 
@@ -61,11 +59,20 @@ public class SaqueAtmOutroValorScreen extends JFrame {
 		JButton btnSacar = new JButton("SACAR");
 		btnSacar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Double valorSaque = Double.parseDouble(txtValorSaque.getText().replace(".", "").replace(",", "."));
-				fazerSaque(valorSaque);
-				irTelaPrincipal();
-				setVisible(false);
-				dispose();
+				try {
+					Double valorSaque = Double.parseDouble(txtValorSaque.getText().replace(".", "").replace(",", "."));
+					if(valorSaque <= 0) {
+						JOptionPane.showMessageDialog(null, "Apenas valores maiores que zero são aceitos para efetuar essa operação!", "Erro: saque!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					fazerSaque(valorSaque);
+					irTelaPrincipal();
+					setVisible(false);
+					dispose();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro inesperado ao realizar o saque --> " + e1.getMessage(), "Erro: saque!", JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		btnSacar.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -77,7 +84,12 @@ public class SaqueAtmOutroValorScreen extends JFrame {
 		lblSaque.setBounds(173, 91, 80, 23);
 		contentPane.add(lblSaque);
 
-		txtValorSaque = new JFormattedTextField(new java.text.DecimalFormat("#,###.00"));
+		DecimalFormat dFormat = new DecimalFormat("#,##0.00");
+	    NumberFormatter formatter = new NumberFormatter(dFormat);
+	    formatter.setFormat(dFormat);
+	    formatter.setAllowsInvalid(false);
+	    
+		txtValorSaque = new JFormattedTextField(formatter);
 		txtValorSaque.setBounds(142, 153, 133, 32);
 		contentPane.add(txtValorSaque);
 		txtValorSaque.setColumns(10);
