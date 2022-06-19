@@ -81,22 +81,35 @@ public class DepositoAtmScreen extends JFrame {
 		JButton btnDepositar = new JButton("DEPOSITAR");
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ITransacaoRepository repository = new TransacaoRepository();
-				Correntista correntista = new Correntista();
-				correntista.setId(CorrentistaLogado.getInstance().getId());
-				Double saldoAnterior = repository.buscaSaldoCorrentista(correntista.getId());
+				try {
+					if(txtValorDeposito.getText().isBlank()) {
+						JOptionPane.showMessageDialog(null, "O campo valor é de preenchimento obrigatório", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					Double valorDeposito = Double.parseDouble(txtValorDeposito.getText().replace(".", "").replace(",", "."));
+					if(valorDeposito <= 0) {
+						JOptionPane.showMessageDialog(null, "O campo valor deve ser superior a zero reais.", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					ITransacaoRepository repository = new TransacaoRepository();
+					Correntista correntista = new Correntista();
+					correntista.setId(CorrentistaLogado.getInstance().getId());
+					Double saldoAnterior = repository.buscaSaldoCorrentista(correntista.getId());
 
-				Double valorDeposito = Double.parseDouble(txtValorDeposito.getText().replace(".", "").replace(",", "."));
-				int rows = repository.gravaTransacao(new Transacao(valorDeposito, saldoAnterior, valorDeposito + saldoAnterior, correntista));
-				if(rows > 0 ) {
-					JOptionPane.showMessageDialog(null, "Depósito realizado com sucesso!", "Depósito: sucesso!", JOptionPane.INFORMATION_MESSAGE);
-					PrincipalATM principalATM = new PrincipalATM();
-					principalATM.setVisible(true);
-					setVisible(false);
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(null, "Erro ao registrar o depósito", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+					int rows = repository.gravaTransacao(new Transacao(valorDeposito, saldoAnterior, valorDeposito + saldoAnterior, correntista));
+					if(rows > 0 ) {
+						JOptionPane.showMessageDialog(null, "Depósito realizado com sucesso!", "Depósito: sucesso!", JOptionPane.INFORMATION_MESSAGE);
+						PrincipalATM principalATM = new PrincipalATM();
+						principalATM.setVisible(true);
+						setVisible(false);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "Erro ao registrar o depósito", "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro inesperado ao registrar o depósito: " + e1.getMessage(), "Depósito: erro!", JOptionPane.ERROR_MESSAGE);
 				}
+				
 			}
 		});
 		btnDepositar.setFont(new Font("Tahoma", Font.BOLD, 14));

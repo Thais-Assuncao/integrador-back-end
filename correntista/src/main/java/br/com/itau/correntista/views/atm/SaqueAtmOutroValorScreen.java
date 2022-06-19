@@ -61,11 +61,20 @@ public class SaqueAtmOutroValorScreen extends JFrame {
 		JButton btnSacar = new JButton("SACAR");
 		btnSacar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Double valorSaque = Double.parseDouble(txtValorSaque.getText().replace(".", "").replace(",", "."));
-				fazerSaque(valorSaque);
-				irTelaPrincipal();
-				setVisible(false);
-				dispose();
+				try {
+					Double valorSaque = Double.parseDouble(txtValorSaque.getText().replace(".", "").replace(",", "."));
+					if(valorSaque <= 0) {
+						JOptionPane.showMessageDialog(null, "Apenas valores maiores que zero são aceitos para efetuar essa operação!", "Erro: saque!", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					fazerSaque(valorSaque);
+					irTelaPrincipal();
+					setVisible(false);
+					dispose();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro inesperado ao realizar o saque --> " + e1.getMessage(), "Erro: saque!", JOptionPane.ERROR_MESSAGE);
+				}
+				
 			}
 		});
 		btnSacar.setFont(new Font("Tahoma", Font.BOLD, 14));
