@@ -6,13 +6,16 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.commons.lang3.StringUtils;
 
 import br.com.itau.correntista.models.Correntista;
 import br.com.itau.correntista.repositories.ICorrentistaRepository;
 import br.com.itau.correntista.repositories.impl.CorrentistaRepository;
-import javax.swing.JScrollPane;
+import br.com.itau.correntista.utils.Utils;
 
 public class ListaCorrentistasScreen extends JFrame {
 
@@ -71,7 +74,8 @@ public class ListaCorrentistasScreen extends JFrame {
 		textArea.append(cabecalho);
 		textArea.append("   =========================================================\n");
 		for(Correntista c: lista) {
-			String linha = "    "+c.getId() + "\t" + c.getNome() + "\t" +c.getAg()+ "\t" + c.getConta() + "\n";
+			String nomeAbreviado = StringUtils.abbreviate(Utils.abreviaNome(c.getNome().toUpperCase()), 29);
+			String linha = "    "+c.getId() + "\t" + Utils.completaNomePequeno(nomeAbreviado)  + "\t" +c.getAg()+ "\t" + c.getConta() + "\n";
 			textArea.append(linha);
 			textArea.append("   =========================================================\n");
 		}
